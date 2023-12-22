@@ -2,15 +2,20 @@ package com.cabeacao.model;
 
 
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -35,17 +40,22 @@ public class Usuario {
 	
 	
 	@NotBlank(message = "O Atributo senha é obrigatório")
-	@Size(min = 8, max = 50, message = "A senha precisa ter no minimo 8 caracteres e no maximo 50" )
-	@Column (length = 50)
+
+	@Size(min = 8,message = "A senha precisa ter no minimo 8" )
+
 	private String senha;
 	
 	@NotNull
 	private String foto;
 	
-	@NotBlank(message = "O Atributo data é obrigatório")
-	@Size(min = 10, max = 10, message = "A data precisa ter 8 caracteres" )
-	@Column (length = 10)
-	private Date dataNascimento;
+
+	@NotNull(message = "O Atributo data é obrigatório")
+	private LocalDate dataNascimento;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties("usuario")
+	private List<Postagem> postagem;
+
 		
 
 	public Long getId() {
@@ -88,12 +98,21 @@ public class Usuario {
 		this.foto = foto;
 	}
 
-	public Date getDataNascimento() {
+
+	public LocalDate getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(Date dataNascimento) {
+	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
+	}
+
+	public List<Postagem> getPostagem() {
+		return postagem;
+	}
+
+	public void setPostagem(List<Postagem> postagem) {
+		this.postagem = postagem;
 	}
 	
 	

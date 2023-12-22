@@ -39,21 +39,17 @@ public class Postagem {
 	@Column(length = 250)
 	private String midia;
 
-	// Como definir o atributo data da postagem
-	// @NotBlank(message = "O atributo data é obrigatório")
-	// private LocalDateTime data;
-
 	@Column
 	private LocalDateTime data = LocalDateTime.now();
-
-	// @PreUpdate
-	// public void preUpdate() {
-	// data = LocalDateTime.now();
-	// }
 
 	@ManyToOne
 	@JsonIgnoreProperties("postagem")
 	private Tema tema;
+	
+	@ManyToOne
+	@JsonIgnoreProperties("postagem")
+	private Usuario usuario;
+	
 
 	public Long getId() {
 		return id;
@@ -111,4 +107,12 @@ public class Postagem {
 		this.tema = tema;
 	}
 
-}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
